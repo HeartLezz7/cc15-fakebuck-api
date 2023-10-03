@@ -1,7 +1,33 @@
 REGISTER
 POST /auth/REGISTER
-BODY firstName,lastName,emailORMobile,password,confirmpassword
+BODY firstName,lastName,emailOrMobile,password,confirmpassword
 RESPONSE
-201 { accessToken: String }
+201 { accessToken: String, user:{id:Number,firstName:String} }
+400 { message: String,emailOrMobileExist:true }
+500 { message: String }
+
+LOGIN 
+POST / auth/login
+BODY emailORMobile,password
+RESPONSE
+200 {accessToken: String,user:{id:Number,firstName:String}}
 400 { message: String }
+500 { message: String }
+
+GET AUTHENTICATED USER
+GET /auth/me
+HEADER AUTHORIZATION Bearer ACCESS_TOKEN
+RESPONSE
+200 { user: { id:Number, firstName: String } }
+401 { message: String }
+500 { message: String }
+
+UPDATE PROFILE/COVER IMAGE
+PATCH / user
+HEADER AUTHORIZATION Bearer ACCESS_TOKEN
+BODY profileImage?, coverImage?
+RESPONSE
+200 { message: String }
+400 { message: String }
+401 { message: String }
 500 { message: String }

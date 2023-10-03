@@ -25,7 +25,9 @@ exports.register = async (req, res, next) => {
       }
     );
     console.log(accessToken);
-    res.status(201).json({ accessToken });
+    delete user.password;
+
+    res.status(201).json({ accessToken, user });
   } catch (err) {
     next(err);
   }
@@ -60,8 +62,13 @@ exports.login = async (req, res, next) => {
       }
     );
     console.log(accessToken);
-    res.status(201).json({ accessToken });
+    delete user.password;
+    res.status(201).json({ accessToken, user });
   } catch (err) {
     next(err);
   }
+};
+
+exports.getMe = async (req, res, next) => {
+  res.status(200).json({ user: req.user });
 };
