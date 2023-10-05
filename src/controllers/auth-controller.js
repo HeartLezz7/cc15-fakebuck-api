@@ -11,7 +11,7 @@ exports.register = async (req, res, next) => {
       error.statusCode = 400;
       return next(error);
     }
-    console.log(value);
+    // console.log(value);
     value.password = await bcrypt.hash(value.password, 12);
     const user = await prisma.user.create({
       data: value,
@@ -36,7 +36,7 @@ exports.register = async (req, res, next) => {
 exports.login = async (req, res, next) => {
   try {
     const { value, error } = loginSchema.validate(req.body);
-    console.log(value);
+    // console.log(value);
     if (error) {
       error.statusCode = 400;
       return next(error);
