@@ -26,7 +26,7 @@ exports.requestFriend = async (req, res, next) => {
       return next(createError("user does not exist", 400));
     }
 
-    const existRelationShip = await prisma.friend.findFirst({
+    const existrelationship = await prisma.friend.findFirst({
       where: {
         OR: [
           { requesterId: req.user.id, receiverId: value.receiverId },
@@ -35,7 +35,7 @@ exports.requestFriend = async (req, res, next) => {
       },
     });
 
-    if (existRelationShip) {
+    if (existrelationship) {
       return next(createError("user already has relationship", 400));
     }
 
@@ -60,7 +60,7 @@ exports.acceptRequest = async (req, res, next) => {
       return next(error);
     }
 
-    const existRelationShip = await prisma.friend.findFirst({
+    const existrelationship = await prisma.friend.findFirst({
       where: {
         requesterId: value.requesterId,
         receiverId: req.user.id,
@@ -68,13 +68,13 @@ exports.acceptRequest = async (req, res, next) => {
       },
     });
 
-    if (!existRelationShip) {
+    if (!existrelationship) {
       return next(createError("relationship does not exist", 400));
     }
 
     await prisma.friend.update({
       data: { status: STATUS_ACCEPTED },
-      where: { id: existRelationShip.id },
+      where: { id: existrelationship.id },
     });
 
     res.status(200).json({ message: "friend request has been ACCEPTED" });
@@ -90,7 +90,7 @@ exports.rejectRequest = async (req, res, next) => {
     if (error) {
       return next(error);
     }
-    const existRelationShip = await prisma.friend.findFirst({
+    const existrelationship = await prisma.friend.findFirst({
       where: {
         receiverId: req.user.id,
         requesterId: value.requesterId,
@@ -98,13 +98,13 @@ exports.rejectRequest = async (req, res, next) => {
       },
     });
 
-    if (!existRelationShip) {
+    if (!existrelationship) {
       return next(createError("relationship does not exist", 400));
     }
 
     await prisma.friend.delete({
       where: {
-        id: existRelationShip.id,
+        id: existrelationship.id,
       },
     });
 
@@ -121,7 +121,7 @@ exports.cancelRequest = async (req, res, next) => {
       return next(error);
     }
 
-    const existRelationShip = await prisma.friend.findFirst({
+    const existrelationship = await prisma.friend.findFirst({
       where: {
         requesterId: req.user.id,
         receiverId: value.receiverId,
@@ -129,12 +129,12 @@ exports.cancelRequest = async (req, res, next) => {
       },
     });
 
-    if (!existRelationShip) {
+    if (!existrelationship) {
       return next(createError("relationship does not exist", 400));
     }
 
     await prisma.friend.delete({
-      where: { id: existRelationShip.id },
+      where: { id: existrelationship.id },
     });
 
     res.status(200).json({ message: "success cancellation" });
@@ -151,7 +151,7 @@ exports.unfriend = async (req, res, next) => {
       return next(error);
     }
 
-    const existRelationShip = await prisma.friend.findFirst({
+    const existrelationship = await prisma.friend.findFirst({
       where: {
         OR: [
           { requesterId: req.user.id, receiverId: value.friendId },
@@ -161,13 +161,13 @@ exports.unfriend = async (req, res, next) => {
       },
     });
 
-    if (!existRelationShip) {
+    if (!existrelationship) {
       return next(createError("relationship does not exist", 400));
     }
 
     await prisma.friend.delete({
       where: {
-        id: existRelationShip.id,
+        id: existrelationship.id,
       },
     });
 

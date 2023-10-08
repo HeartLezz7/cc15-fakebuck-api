@@ -86,4 +86,29 @@ RESPONSE
 401 { message: String }
 500 { message: String }
 
+CREATE POST
+POST /POSTHEADER AUTHORIZATION Bearer ACCESS_TOKEN
+BODY message?,image?
+RESPONSE
+200 { message: String }
+400 { message: String }
+401 { message: String }
+500 { message: String }
 
+GET ALL POST INCLUDE POST FRIENDS 
+GET /post/friend
+HEADER AUTHORIZATION Bearer ACCESS_TOKEN
+RESPONSE
+200 { post: [ {id:number,message:string, image:string, ...} ] }
+400 { message: String }
+401 { message: String }
+500 { message: String }
+
+TOGGLE LIKE
+POST /post/:postId/LIKE
+HEADER AUTHORIZATION Bearer ACCESS_TOKEN
+RESPONSE
+200 { message: String }
+400 { message: String }
+401 { message: String }
+500 { message: String }
